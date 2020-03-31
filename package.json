@@ -1,0 +1,16 @@
+{
+  "name": "RaspTV",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Liaro0903/RaspTV.git",
+  "author": "Ian Huang <ian880903@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "server": "node Backend/index.js",
+    "client": "yarn --cwd Frontend start",
+    "start": "concurrently \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
