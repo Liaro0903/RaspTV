@@ -8,7 +8,9 @@
   "scripts": {
     "server": "node Backend/index.js",
     "client": "yarn --cwd Frontend start",
-    "start": "concurrently \"yarn server\" \"yarn client\""
+    "client-prod": "serve -s Frontend/build",
+    "start": "concurrently \"yarn server\" \"yarn client\"",
+    "start-prod": "concurrently \"yarn server\" \"yarn client-prod\""
   },
   "dependencies": {
     "concurrently": "^5.1.0"
