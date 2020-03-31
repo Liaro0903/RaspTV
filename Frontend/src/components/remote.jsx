@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { Button, Typography, Grid, Container } from '@material-ui/core'
-import axios from 'axios';
+import { Button, Typography, Grid, Container, Fab } from '@material-ui/core'
+import { green } from '@material-ui/core/colors';
 import { baseURL } from '../constants';
+import openSocket from 'socket.io-client';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+
+const socket = openSocket(baseURL);
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -11,7 +15,14 @@ const useStyles = makeStyles((theme) =>
     },
     grid: {
       margin: theme.spacing(4, 0),
-    }
+    },
+    fabGreen: {
+      color: theme.palette.common.white,
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[600],
+      },
+    },
   })
 );
 
@@ -32,6 +43,7 @@ const renderMobile = (channel, classes) => (
 const Remote = () => {
   const classes = useStyles();
 
+  const [power, setPower] = useState(false);
   const [remote, setRemote] = useState(true);
   const [channels, setChannels] = useState([]);
   const [active, setActive] = useState('');
@@ -42,8 +54,8 @@ const Remote = () => {
         size='large'
         fullWidth
         variant='contained'
-        onClick={() => updateActive(channel.id, channel.url)}
-        color={active === channel.id ? 'primary' : 'default'}
+        onClick={() => socket.emit('setActive', channel.url)}
+        color={active === channel.url ? 'primary' : 'default'}
         className={classes.paper}
       >
         <Typography variant='h4'>{channel.name}</Typography>
@@ -51,33 +63,15 @@ const Remote = () => {
     </Grid>
   )
 
-  const getChannels = async () => {
-    try {
-      const channels_resp = await axios.get(`${baseURL}channels`);
-      setChannels(channels_resp.data);
-      const active_resp = await axios.get(`${baseURL}active`);
-      setActive(active_resp.data.channelId);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const updateActive = async (id, url) => {
-    try {
-      const response = await axios.put(`${baseURL}active`, {
-        channelId: id,
-        url: url
-      });
-      setActive(response.data.channelId);
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   useEffect(() => {
-    getChannels();
+    socket.emit('getPower');
+    socket.emit('getChannels');
+    socket.emit('getActive');
   }, []);
+
+  socket.on('channels', (db) => setChannels(db));
+  socket.on('active', (active) => setActive(active));
+  socket.on('power', (power) => setPower(power));
 
   return (
     <div>
@@ -109,10 +103,29 @@ const Remote = () => {
           </Grid>
         </Grid>
         <Grid container spacing={3} justify='center'>
-          {remote
-            ? channels.map(channel => renderRemote(channel, active, classes))
-            : channels.map(channel => renderMobile(channel, active, classes))}
+          {
+            remote
+              ? power ?
+                channels.map(channel => renderRemote(channel, active, classes))
+                : <div></div>
+              : channels.map(channel => renderMobile(channel, active, classes))
+          }
         </Grid>
+        {remote ?
+          <Grid container justify='center'>
+            <Typography align='center' style={{ marginTop: 40 }}>
+              <Fab
+                aria-label='add'
+                color='inherit'
+                className={classes.fabGreen}
+                onClick={() => socket.emit('setPower', !power)}
+              >
+                <PowerSettingsNewIcon />
+              </Fab>
+            </Typography>
+          </Grid>
+          : <div></div>
+        }
       </Container>
     </div>
   )
