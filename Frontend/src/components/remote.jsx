@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 const renderMobile = (channel, classes) => (
-  <Grid item md={4} xs={12} key={channel.id}>
+  <Grid item lg={4} xs={12} key={channel.id}>
     <Button
       size='large'
       fullWidth
@@ -49,7 +49,7 @@ const Remote = () => {
   const [active, setActive] = useState('');
 
   const renderRemote = (channel, active, classes) => (
-    <Grid item md={4} xs={12} key={channel.id}>
+    <Grid item lg={4} xs={12} key={channel.id}>
       <Button
         size='large'
         fullWidth
@@ -125,6 +125,13 @@ const Remote = () => {
             </Typography>
           </Grid>
           : <div></div>
+        }
+        {power ?
+          <Grid container justify='center'>
+            <Typography variant='h6' align='center' style={{ marginTop: 20 }}>
+              看完新聞請記得按綠色按鈕關機
+            </Typography>
+          </Grid> : <div></div>
         }
       </Container>
     </div>

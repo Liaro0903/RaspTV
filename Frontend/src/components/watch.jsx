@@ -39,7 +39,7 @@ const Watch = () => {
           width: 1920,
           height: 1080,
         }}>
-          <Typography variant='h1'>關機</Typography>
+          <Typography variant='h1'>觀看新聞請按綠色按鈕開機</Typography>
         </div>
       }
     </div>
