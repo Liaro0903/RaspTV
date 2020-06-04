@@ -44,7 +44,7 @@ const Remote = () => {
   const classes = useStyles();
 
   const [power, setPower] = useState(false);
-  const [remote, setRemote] = useState(true);
+  const [remote] = useState(true);
   const [channels, setChannels] = useState([]);
   const [active, setActive] = useState('');
 
@@ -76,6 +76,7 @@ const Remote = () => {
   return (
     <div>
       <Container fixed>
+        {/*
         <Grid container spacing={2} justify='center' className={classes.grid}>
           <Grid item xs={4}>
             <Button
@@ -102,7 +103,8 @@ const Remote = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container spacing={3} justify='center'>
+        */}
+        <Grid container spacing={3} justify='center' style={{marginTop: 80}}>
           {
             remote
               ? power ?
