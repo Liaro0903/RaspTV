@@ -2,7 +2,7 @@ const db = [
   {
     'id': '東森',
     'name': '東森新聞',
-    'url': 'RaIJ767Bj_M'
+    'url': '63RmMXCd_bQ'
   },
   {
     'id': '三立',
@@ -17,7 +17,7 @@ const db = [
   {
     'id': 'TVBS',
     'name': 'TVBS',
-    'url': 'Hu1FkdAOws0'
+    'url': 'A4FbB8UhNRs'
   }
 ];
 

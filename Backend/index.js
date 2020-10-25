@@ -28,5 +28,5 @@ io.on('connection', (socket) => {
 });
 
 const port = 3001;
-server.listen(port, '192.168.1.117');
+server.listen(port, '192.168.1.124');
 console.log('listening on port', port);
