@@ -1,4 +1,10 @@
-const db = [
+interface Idb {
+  'id': string;
+  'name': string;
+  'url': string;
+}
+
+export const db: Idb[] = [
   {
     'id': '東森',
     'name': '東森新聞',
@@ -19,6 +25,4 @@ const db = [
     'name': 'TVBS',
     'url': 'A4FbB8UhNRs'
   }
-];
-
-module.exports = db;
+]

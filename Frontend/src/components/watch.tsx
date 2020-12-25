@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import Youtube from 'react-youtube';
-import openSocket from 'socket.io-client';
 import { Typography } from '@material-ui/core';
-import { baseURL } from '../constants';
+import Youtube from 'react-youtube';
+import io from 'socket.io-client';
 
-const socket = openSocket(baseURL);
+const socket = io();
 
 const Watch = () => {
-
-  const [power, setPower] = useState(false);
-  const [active, setActive] = useState('');
+  const [power, setPower] = useState<boolean>(false);
+  const [activeURL, setActiveURL] = useState<string>('');
 
   useEffect(() => {
     socket.emit('getPower');
-    socket.emit('getActive');
+    socket.emit('getActiveURL');
   }, []);
 
-  socket.on('power', (power) => setPower(power));
-  socket.on('active', (active) => setActive(active));
+  socket.on('power', (power: boolean) => setPower(power));
+  socket.on('activeURL', (activeURL: string) => setActiveURL(activeURL));
 
   return (
     <div>
       {power ?
         <Youtube
-          videoId={active}
+          videoId={activeURL}
           opts={{
             height: '1080',
             width: '1920',

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Button, Typography, Grid, Container, Fab } from '@material-ui/core'
 import { green } from '@material-ui/core/colors';
-import { baseURL } from '../constants';
-import openSocket from 'socket.io-client';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import io from 'socket.io-client';
+import { IChannel } from '../types/IChannel';
 
-const socket = openSocket(baseURL);
+const socket = io();
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       padding: theme.spacing(1),
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const renderMobile = (channel, classes) => (
+const renderMobile = (channel: IChannel, classes: any) => (
   <Grid item lg={4} xs={12} key={channel.id}>
     <Button
       size='large'
@@ -43,19 +43,19 @@ const renderMobile = (channel, classes) => (
 const Remote = () => {
   const classes = useStyles();
 
-  const [power, setPower] = useState(false);
-  const [remote] = useState(true);
-  const [channels, setChannels] = useState([]);
-  const [active, setActive] = useState('');
+  const [power, setPower] = useState<boolean>(false);
+  const [remote] = useState<boolean>(true);
+  const [channels, setChannels] = useState<IChannel[]>([]);
+  const [activeURL, setActiveURL] = useState<string>('');
 
-  const renderRemote = (channel, active, classes) => (
+  const renderRemote = (channel: IChannel, activeURL: string, classes: any) => (
     <Grid item lg={4} xs={12} key={channel.id}>
       <Button
         size='large'
         fullWidth
         variant='contained'
-        onClick={() => socket.emit('setActive', channel.url)}
-        color={active === channel.url ? 'primary' : 'default'}
+        onClick={() => socket.emit('setActiveURL', channel.url)}
+        color={activeURL === channel.url ? 'primary' : 'default'}
         className={classes.paper}
       >
         <Typography variant='h4'>{channel.name}</Typography>
@@ -66,12 +66,12 @@ const Remote = () => {
   useEffect(() => {
     socket.emit('getPower');
     socket.emit('getChannels');
-    socket.emit('getActive');
+    socket.emit('getActiveURL');
   }, []);
 
-  socket.on('channels', (db) => setChannels(db));
-  socket.on('active', (active) => setActive(active));
-  socket.on('power', (power) => setPower(power));
+  socket.on('channels', (db: IChannel[]) => setChannels(db));
+  socket.on('activeURL', (activeURL: string) => setActiveURL(activeURL));
+  socket.on('power', (power: boolean) => setPower(power));
 
   return (
     <div>
@@ -104,13 +104,12 @@ const Remote = () => {
           </Grid>
         </Grid>
         */}
-        <Grid container spacing={3} justify='center' style={{marginTop: 80}}>
-          {
-            remote
-              ? power ?
-                channels.map(channel => renderRemote(channel, active, classes))
-                : <div></div>
-              : channels.map(channel => renderMobile(channel, active, classes))
+        <Grid container spacing={3} justify='center' style={{ marginTop: 80 }}>
+          {remote
+            ? power ?
+              channels.map(channel => renderRemote(channel, activeURL, classes))
+              : <div></div>
+            : channels.map(channel => renderMobile(channel, classes))
           }
         </Grid>
         {remote ?
