@@ -8,12 +8,12 @@ export const db: Idb[] = [
   {
     'id': '東森',
     'name': '東森新聞',
-    'url': '63RmMXCd_bQ'
+    'url': 'R2iMq5LKXco'
   },
   {
     'id': '三立',
     'name': '三立新聞',
-    'url': '4ZVUmEUFwaY'
+    'url': 'pJ0VgJloR9E'
   },
   {
     'id': '民視',
