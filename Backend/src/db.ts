@@ -13,7 +13,7 @@ export const db: Idb[] = [
   {
     'id': '三立',
     'name': '三立新聞',
-    'url': 'pJ0VgJloR9E'
+    'url': 'CKjSm5ZeehE'
   },
   {
     'id': '民視',
@@ -23,6 +23,6 @@ export const db: Idb[] = [
   {
     'id': 'TVBS',
     'name': 'TVBS',
-    'url': 'A4FbB8UhNRs'
+    'url': 'V0WxUakDV7M'
   }
 ]
